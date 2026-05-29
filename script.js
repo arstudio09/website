@@ -171,6 +171,46 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
   });
 });
 
+// ─── LIGHTBOX ────────────────────────────────────────────────────────
+const lightbox = document.getElementById('lightbox');
+const lbImg    = document.getElementById('lbImg');
+const lbClose  = document.getElementById('lbClose');
+const lbPrev   = document.getElementById('lbPrev');
+const lbNext   = document.getElementById('lbNext');
+
+function openLightbox() {
+  lbImg.src = filtered[current].src;
+  lbImg.alt = filtered[current].label;
+  lightbox.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  lightbox.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function lbNavigate(dir) {
+  goTo(current + dir);
+  lbImg.src = filtered[current].src;
+  lbImg.alt = filtered[current].label;
+}
+
+// Configurar cursor y clicks
+carouselImg.style.cursor = 'zoom-in';
+carouselImg.addEventListener('click', openLightbox);
+lbClose.addEventListener('click', closeLightbox);
+lbPrev.addEventListener('click', () => lbNavigate(-1));
+lbNext.addEventListener('click', () => lbNavigate(1));
+lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+
+document.addEventListener('keydown', e => {
+  if (!lightbox.classList.contains('active')) return;
+  if (e.key === 'Escape')     closeLightbox();
+  if (e.key === 'ArrowLeft')  lbNavigate(-1);
+  if (e.key === 'ArrowRight') lbNavigate(1);
+});
+
 // ─── INIT ─────────────────────────────────────────────────────────────
 function initCarousel() {
   renderThumbs();
