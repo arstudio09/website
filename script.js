@@ -1,0 +1,178 @@
+// ─── TABS DE SERVICIOS ───────────────────────────────────────────────
+document.querySelectorAll('.srv-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const idx = tab.dataset.tab;
+    document.querySelectorAll('.srv-tab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+    document.querySelectorAll('.srv-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    tab.setAttribute('aria-selected','true');
+    document.getElementById('panel' + idx).classList.add('active');
+  });
+});
+
+// ─── NAVBAR SCROLL ───────────────────────────────────────────────────
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// ─── HAMBURGER MENU ──────────────────────────────────────────────────
+const hamburger = document.getElementById('hamburger');
+const navLinks  = document.getElementById('navLinks');
+hamburger.addEventListener('click', () => {
+  navLinks.classList.toggle('open');
+});
+navLinks.querySelectorAll('.nav-link').forEach(link => {
+  link.addEventListener('click', () => navLinks.classList.remove('open'));
+});
+
+// ─── HERO BG PARALLAX ────────────────────────────────────────────────
+const heroBg = document.querySelector('.hero-bg');
+window.addEventListener('scroll', () => {
+  if (heroBg) heroBg.style.transform = `scale(1.05) translateY(${window.scrollY * 0.2}px)`;
+});
+
+// ─── SCROLL REVEAL ───────────────────────────────────────────────────
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach((e) => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      revealObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+// ─── PORTFOLIO DATA ──────────────────────────────────────────────────
+const portfolioData = [
+  { src: 'assets/images/trabajos/1.jpg',   category: 'cocinas',  label: 'Cocina Integral' },
+  { src: 'assets/images/trabajos/2.jpeg',  category: 'closets',  label: 'Vestidor a Medida' },
+  { src: 'assets/images/trabajos/3.jpeg',  category: 'cocinas',  label: 'Cocina con Isla' },
+  { src: 'assets/images/trabajos/4.jpg',   category: 'muebles',  label: 'Centro de TV' },
+  { src: 'assets/images/trabajos/5.jpeg',  category: 'closets',  label: 'Clóset Empotrado' },
+  { src: 'assets/images/trabajos/6.jpeg',  category: 'muebles',  label: 'Tocador Flotante' },
+  { src: 'assets/images/trabajos/7.jepg',  category: 'cocinas',  label: 'Cocina Moderna' },
+  { src: 'assets/images/trabajos/8.jpeg',  category: 'muebles',  label: 'Mueble de TV' },
+  { src: 'assets/images/trabajos/9.jpeg',  category: 'closets',  label: 'Vestidor Premium' },
+  { src: 'assets/images/trabajos/10.jpeg', category: 'cocinas',  label: 'Cocina Completa' },
+  { src: 'assets/images/trabajos/12.jpg',  category: 'muebles',  label: 'Mueble Especial' },
+  { src: 'assets/images/trabajos/13.jpg',  category: 'closets',  label: 'Clóset con Luz LED' },
+];
+
+// ─── CAROUSEL STATE ──────────────────────────────────────────────────
+let filtered = [...portfolioData];
+let current  = 0;
+let autoTimer = null;
+
+// DOM refs
+const carouselImg      = document.getElementById('carouselImg');
+const carouselLabel    = document.getElementById('carouselLabel');
+const carouselCounter  = document.getElementById('carouselCounter');
+const carouselProgress = document.getElementById('carouselProgress');
+const carouselThumbs   = document.getElementById('carouselThumbs');
+const carouselPrev     = document.getElementById('carouselPrev');
+const carouselNext     = document.getElementById('carouselNext');
+
+// ─── RENDER THUMBNAILS ───────────────────────────────────────────────
+function renderThumbs() {
+  carouselThumbs.innerHTML = '';
+  filtered.forEach((item, idx) => {
+    const div = document.createElement('div');
+    div.className = 'carousel-thumb' + (idx === current ? ' active' : '');
+    div.setAttribute('role', 'listitem');
+    div.innerHTML = `<img src="${item.src}" alt="${item.label}" loading="lazy">`;
+    div.addEventListener('click', () => goTo(idx));
+    carouselThumbs.appendChild(div);
+  });
+}
+
+// ─── GO TO SLIDE ─────────────────────────────────────────────────────
+function goTo(idx) {
+  current = (idx + filtered.length) % filtered.length;
+  const item = filtered[current];
+
+  // Fade out → swap → fade in
+  carouselImg.classList.add('fade-out');
+  setTimeout(() => {
+    carouselImg.src = item.src;
+    carouselImg.alt = item.label;
+    carouselImg.classList.remove('fade-out');
+  }, 350);
+
+  carouselLabel.textContent   = item.label;
+  carouselCounter.textContent = `${current + 1} / ${filtered.length}`;
+  carouselProgress.style.width = `${((current + 1) / filtered.length) * 100}%`;
+
+  // Update thumbs active state
+  carouselThumbs.querySelectorAll('.carousel-thumb').forEach((t, i) => {
+    t.classList.toggle('active', i === current);
+  });
+
+  // Scroll active thumb into view
+  const activeThumb = carouselThumbs.children[current];
+  if (activeThumb) activeThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+
+  resetAutoPlay();
+}
+
+// ─── NAV BUTTONS ─────────────────────────────────────────────────────
+carouselPrev.addEventListener('click', () => goTo(current - 1));
+carouselNext.addEventListener('click', () => goTo(current + 1));
+
+// ─── KEYBOARD NAV ────────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowLeft')  goTo(current - 1);
+  if (e.key === 'ArrowRight') goTo(current + 1);
+});
+
+// ─── TOUCH SWIPE ─────────────────────────────────────────────────────
+let touchStartX = 0;
+const carouselMain = document.getElementById('carouselMain');
+carouselMain.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+carouselMain.addEventListener('touchend',   e => {
+  const diff = touchStartX - e.changedTouches[0].screenX;
+  if (Math.abs(diff) > 40) diff > 0 ? goTo(current + 1) : goTo(current - 1);
+});
+
+// ─── AUTO PLAY ────────────────────────────────────────────────────────
+function startAutoPlay() {
+  autoTimer = setInterval(() => goTo(current + 1), 4000);
+}
+function resetAutoPlay() {
+  clearInterval(autoTimer);
+  startAutoPlay();
+}
+
+// ─── FILTER ───────────────────────────────────────────────────────────
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.filter;
+    filtered = f === 'all' ? [...portfolioData] : portfolioData.filter(i => i.category === f);
+    current  = 0;
+    renderThumbs();
+    // Force first slide immediately (no animation)
+    const first = filtered[0];
+    carouselImg.src             = first.src;
+    carouselImg.alt             = first.label;
+    carouselLabel.textContent   = first.label;
+    carouselCounter.textContent = `1 / ${filtered.length}`;
+    carouselProgress.style.width = `${(1 / filtered.length) * 100}%`;
+    resetAutoPlay();
+  });
+});
+
+// ─── INIT ─────────────────────────────────────────────────────────────
+function initCarousel() {
+  renderThumbs();
+  const first = filtered[0];
+  carouselImg.src             = first.src;
+  carouselImg.alt             = first.label;
+  carouselLabel.textContent   = first.label;
+  carouselCounter.textContent = `1 / ${filtered.length}`;
+  carouselProgress.style.width = `${(1 / filtered.length) * 100}%`;
+  startAutoPlay();
+}
+
+initCarousel();
