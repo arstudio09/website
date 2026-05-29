@@ -108,9 +108,17 @@ function goTo(idx) {
     t.classList.toggle('active', i === current);
   });
 
-  // Scroll active thumb into view
+  // Scroll active thumb horizontally inside container only
   const activeThumb = carouselThumbs.children[current];
-  if (activeThumb) activeThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  if (activeThumb) {
+    const containerWidth = carouselThumbs.clientWidth;
+    const thumbOffset = activeThumb.offsetLeft;
+    const thumbWidth = activeThumb.clientWidth;
+    carouselThumbs.scrollTo({
+      left: thumbOffset - (containerWidth / 2) + (thumbWidth / 2),
+      behavior: 'smooth'
+    });
+  }
 
   resetAutoPlay();
 }
