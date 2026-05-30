@@ -45,18 +45,29 @@ document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
 // ─── PORTFOLIO DATA ──────────────────────────────────────────────────
 const portfolioData = [
-  { src: 'assets/images/trabajos/1.jpg',   category: 'cocinas',  label: 'Cocina Integral' },
-  { src: 'assets/images/trabajos/2.jpeg',  category: 'closets',  label: 'Vestidor a Medida' },
-  { src: 'assets/images/trabajos/3.jpeg',  category: 'cocinas',  label: 'Cocina con Isla' },
-  { src: 'assets/images/trabajos/4.jpg',   category: 'muebles',  label: 'Centro de TV' },
-  { src: 'assets/images/trabajos/5.jpeg',  category: 'closets',  label: 'Clóset Empotrado' },
-  { src: 'assets/images/trabajos/6.jpeg',  category: 'muebles',  label: 'Tocador Flotante' },
-  { src: 'assets/images/trabajos/7.jepg',  category: 'cocinas',  label: 'Cocina Moderna' },
-  { src: 'assets/images/trabajos/8.jpeg',  category: 'muebles',  label: 'Mueble de TV' },
-  { src: 'assets/images/trabajos/9.jpeg',  category: 'closets',  label: 'Vestidor Premium' },
-  { src: 'assets/images/trabajos/10.jpeg', category: 'cocinas',  label: 'Cocina Completa' },
-  { src: 'assets/images/trabajos/12.jpg',  category: 'muebles',  label: 'Mueble Especial' },
-  { src: 'assets/images/trabajos/13.jpg',  category: 'closets',  label: 'Clóset con Luz LED' },
+  // ── COCINAS (9) ──
+  { src: 'assets/images/portafolio/cocinas/cocina.jpg',       category: 'cocinas', label: 'Cocina Integral' },
+  { src: 'assets/images/portafolio/cocinas/cocina1.jpg',      category: 'cocinas', label: 'Cocina a Medida' },
+  { src: 'assets/images/portafolio/cocinas/cocina2.jpg',      category: 'cocinas', label: 'Cocina con Isla' },
+  { src: 'assets/images/portafolio/cocinas/cocina3.jpg',      category: 'cocinas', label: 'Cocina Moderna' },
+  { src: 'assets/images/portafolio/cocinas/cocina4.jpg',      category: 'cocinas', label: 'Cocina Alto Brillo' },
+  { src: 'assets/images/portafolio/cocinas/cocina5.jpg',      category: 'cocinas', label: 'Cocina Completa' },
+  { src: 'assets/images/portafolio/cocinas/cocina.leds.jpg',  category: 'cocinas', label: 'Cocina con Iluminación LED' },
+  { src: 'assets/images/portafolio/cocinas/8.jpg',            category: 'cocinas', label: 'Cocina Premium' },
+  { src: 'assets/images/portafolio/cocinas/10.jpg',           category: 'cocinas', label: 'Cocina Residencial' },
+  // ── CLÓSETS (6) ──
+  { src: 'assets/images/portafolio/closets/1.jpg',  category: 'closets', label: 'Clóset a Medida' },
+  { src: 'assets/images/portafolio/closets/2.jpg',  category: 'closets', label: 'Vestidor Premium' },
+  { src: 'assets/images/portafolio/closets/3.jpg',  category: 'closets', label: 'Clóset Empotrado' },
+  { src: 'assets/images/portafolio/closets/4.jpg',  category: 'closets', label: 'Clóset con LED' },
+  { src: 'assets/images/portafolio/closets/6.jpg',  category: 'closets', label: 'Vestidor Moderno' },
+  { src: 'assets/images/portafolio/closets/9.jpg',  category: 'closets', label: 'Clóset Completo' },
+  // ── MUEBLES (5) ──
+  { src: 'assets/images/portafolio/muebles/5.jpg',            category: 'muebles', label: 'Mueble a Medida' },
+  { src: 'assets/images/portafolio/muebles/7.jpg',            category: 'muebles', label: 'Centro de TV' },
+  { src: 'assets/images/portafolio/muebles/12.jpg',           category: 'muebles', label: 'Mueble Flotante' },
+  { src: 'assets/images/portafolio/muebles/13.jpg',           category: 'muebles', label: 'Tocador con Espejo' },
+  { src: 'assets/images/portafolio/muebles/vista.pared.jpg',  category: 'muebles', label: 'Vista de Mueble Empotrado' },
 ];
 
 // ─── CAROUSEL STATE ──────────────────────────────────────────────────
